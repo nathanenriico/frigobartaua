@@ -219,9 +219,9 @@ function closePopup() {
 }
 
 function toggleChat() {
-    let chatbot = document.getElementById("chatbot");
-    chatbot.style.display = chatbot.style.display === "none" ? "flex" : "none";
-}
+    const chatbot = document.getElementById("chatbot");
+    chatbot.style.display = (chatbot.style.display === "flex") ? "none" : "flex";
+  }
 
 function sendMessage(message) {
     let chatBody = document.getElementById("chat-body");
