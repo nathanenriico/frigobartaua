@@ -150,15 +150,48 @@ function copiarPix() {
     showCopySuccessPopup();
 }
 
-function enviarWhatsapp() {
-    const numero = "5511941716617"; // DDI 55 + DDD 11 + número
-    const apartamento = document.getElementById("apartment-number").value.trim();
-    const total = document.getElementById("popup-total").innerText;
-    const mensagem = `Olá! Sou do apartamento ${apartamento}. Segue o comprovante de pagamento do frigobar, no valor de R$ ${total}.`;
-
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-    window.open(url, '_blank');
+function mostrarPreview(event) {
+    const arquivo = event.target.files[0];
+    if (arquivo) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("preview-comprovante").innerHTML = `
+                <p><strong>Prévia do comprovante:</strong></p>
+                <img src="${e.target.result}" alt="Comprovante" style="max-width: 100%; margin-top: 10px; border-radius: 8px;">
+            `;
+        };
+        reader.readAsDataURL(arquivo);
+    }
 }
+
+function enviarWhatsapp() {
+    const comprovante = document.getElementById("comprovante").files[0];
+    const apartamento = document.getElementById("apartment-number").value.trim();
+
+    if (!comprovante) {
+        document.getElementById("comprovante-popup").style.display = "flex";
+        return;
+    }
+
+    if (!apartamento) {
+        alert("Informe o número do apartamento antes de enviar.");
+        return;
+    }
+
+    const mensagem = `Olá, segue o comprovante de pagamento do apartamento ${apartamento}. Por favor, verifique no sistema.`;
+    const numero = "5511941716617"; // com DDI
+    const link = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+    window.open(link, '_blank');
+}
+
+function fecharComprovantePopup() {
+    document.getElementById("comprovante-popup").style.display = "none";
+}
+
+function fecharPopup() {
+    document.getElementById('payment-popup').style.display = 'none';
+  }
+  
 
 // Novo popup de sucesso ao copiar
 function showCopySuccessPopup() {
@@ -217,3 +250,32 @@ function getResponse(message) {
 function redirectToWhatsApp() {
     window.location.href = "https://wa.me/5511941716617?text=Olá, tenho uma dúvida sobre o frigobar.";
 }
+
+function enviarSugestaoWhatsapp() {
+    const sugestao = document.getElementById("item-sugestao").value.trim();
+    const numero = "5511941716617"; // Troque pelo número do hotel com DDI
+  
+    if (sugestao === "") {
+      alert("Por favor, digite sua sugestão!");
+      return;
+    }
+  
+    // Monta a mensagem
+    const mensagem = `Olá! Gostaria de sugerir o item "${sugestao}" para o frigobar do hotel.`;
+  
+    // Cria o link do WhatsApp
+    const linkWhatsapp = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+  
+    // Abre o WhatsApp em nova aba
+    window.open(linkWhatsapp, '_blank');
+  
+    // Feedback visual local
+    document.getElementById("mensagem-sugestao").style.display = "block";
+    document.getElementById("item-sugestao").value = "";
+  
+    // Esconde a mensagem depois de 3 segundos
+    setTimeout(() => {
+      document.getElementById("mensagem-sugestao").style.display = "none";
+    }, 3000);
+  }
+  
