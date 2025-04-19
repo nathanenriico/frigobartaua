@@ -219,9 +219,9 @@ function closePopup() {
 }
 
 function toggleChat() {
-    const chatbot = document.getElementById("chatbot");
-    chatbot.style.display = (chatbot.style.display === "flex") ? "none" : "flex";
-  }
+    let chatbot = document.getElementById("chatbot");
+    chatbot.style.display = chatbot.style.display === "none" ? "flex" : "none";
+}
 
 function sendMessage(message) {
     let chatBody = document.getElementById("chat-body");
@@ -278,4 +278,3 @@ function enviarSugestaoWhatsapp() {
       document.getElementById("mensagem-sugestao").style.display = "none";
     }, 3000);
   }
-  
